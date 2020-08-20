@@ -212,6 +212,7 @@ export default class extends Component {
           }
           .editor-and-output {
             display: flex;
+            height: 0;
             flex-grow: 1;
             min-width: 0;
             /* https://stackoverflow.com/q/44192057/247243 */
