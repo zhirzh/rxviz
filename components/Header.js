@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default () => (
+const Header = () => (
   <header className="container">
     <Link as="/" href="/?exampleId=basic-interval">
       <a>
@@ -68,3 +68,5 @@ export default () => (
     `}</style>
   </header>
 );
+
+export default Header;
