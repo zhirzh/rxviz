@@ -6,6 +6,19 @@ import Editor from '../components/Editor';
 import Output from '../components/Output';
 import { createSnippet, getSnippet, shareSnippet } from '../api/snippets';
 
+const localStorageKey = 'rxviz-stash';
+
+const exampleCode = `const { interval } = Rx;
+
+const { } = RxOperators;
+// All operators are available as globals
+// Note: "window" operator us available as "win"
+
+interval(1000).pipe(
+  take(4)
+)
+`;
+
 export default class extends Component {
   static async getInitialProps({ query, res }) {
     const { snippetId } = query;
@@ -28,12 +41,33 @@ export default class extends Component {
           };
         });
     }
+
+    return {
+      code: exampleCode,
+      timeWindow: 5000
+    };
   }
 
   constructor(props) {
     super();
 
     this.state = this.resetState(props);
+  }
+
+  componentDidMount() {
+    const stash = this.getLocalStorageStash();
+
+    if (stash) {
+      const { code, timeWindow } = stash;
+
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState(
+        this.resetState({
+          code,
+          timeWindow
+        })
+      );
+    }
   }
 
   resetState(props) {
@@ -59,6 +93,50 @@ export default class extends Component {
     ) {
       this.setState(this.resetState(nextProps));
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { code, timeWindowInputValue } = this.state;
+
+    if (
+      code !== prevState.code ||
+      timeWindowInputValue !== prevState.timeWindowInputValue
+    ) {
+      this.setLocalStorageStash({
+        code,
+        timeWindow: timeWindowInputValue * 1000
+      });
+    }
+  }
+
+  getLocalStorageStash() {
+    let stash;
+
+    try {
+      stash = JSON.parse(localStorage.getItem(localStorageKey));
+    } catch {
+      stash = null;
+    }
+
+    if (stash) {
+      const { code, timeWindow } = stash;
+
+      const isValidCode = typeof code === 'string' && code !== '';
+
+      const isValidTimeWindow =
+        typeof timeWindow === 'number' && timeWindow !== 0;
+
+      if (isValidCode && isValidTimeWindow) {
+        return { code, timeWindow };
+      }
+    }
+
+    localStorage.removeItem(localStorageKey);
+    return null;
+  }
+
+  setLocalStorageStash(stash) {
+    localStorage.setItem(localStorageKey, JSON.stringify(stash));
   }
 
   onTimeWindowInputValueFocus = () => {
