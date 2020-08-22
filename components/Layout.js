@@ -3,18 +3,14 @@ import PropTypes from 'prop-types';
 import ReactGA from 'react-ga';
 import Head from 'next/head';
 import Header from './Header';
-import Sidebar from './Sidebar';
 
 export default class extends Component {
   static propTypes = {
     title: PropTypes.string,
-    renderSidebar: PropTypes.bool,
-    sidebarActiveItemId: PropTypes.string,
     children: PropTypes.any
   };
 
   static defaultProps = {
-    renderSidebar: true,
     title: 'Animated playground for Rx Observables'
   };
 
@@ -34,7 +30,7 @@ export default class extends Component {
   }
 
   render() {
-    const { title, renderSidebar, sidebarActiveItemId, children } = this.props;
+    const { title, children } = this.props;
 
     return (
       <div className="container">
@@ -57,12 +53,7 @@ export default class extends Component {
           <style>{`body { margin: 0; }`}</style>
         </Head>
         <Header />
-        <div className="inner-container">
-          {renderSidebar ? (
-            <Sidebar activeItemId={sidebarActiveItemId} />
-          ) : null}
-          {children}
-        </div>
+        <div className="inner-container">{children}</div>
         <style jsx>{`
           .container {
             height: 100vh;

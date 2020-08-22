@@ -4,7 +4,6 @@ import Layout from '../components/Layout';
 import Controls from '../components/Controls';
 import Editor from '../components/Editor';
 import Output from '../components/Output';
-import codeExamples from '../lib/code-examples';
 import { createSnippet, getSnippet, shareSnippet } from '../api/snippets';
 
 export default class extends Component {
@@ -15,7 +14,6 @@ export default class extends Component {
       // came from /v/hashid
       return getSnippet(snippetId)
         .then(({ code, timeWindow }) => ({
-          exampleId: 'custom',
           code,
           timeWindow
         }))
@@ -30,27 +28,6 @@ export default class extends Component {
           };
         });
     }
-
-    // came from /examples/exampleId
-    let { exampleId } = query;
-
-    if (!exampleId) {
-      exampleId = 'basic-interval';
-    }
-
-    if (codeExamples[exampleId]) {
-      const { code, timeWindow } = codeExamples[exampleId];
-
-      return {
-        exampleId,
-        code,
-        timeWindow
-      };
-    }
-
-    return {
-      errorStatusCode: 404
-    };
   }
 
   constructor(props) {
@@ -62,7 +39,6 @@ export default class extends Component {
   resetState(props) {
     return {
       errorStatusCode: props.errorStatusCode,
-      exampleId: props.exampleId,
       code: props.code,
       timeWindowInputValue: props.timeWindow / 1000,
       timeWindowInputValueBeforeChange: null,
@@ -74,11 +50,10 @@ export default class extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { errorStatusCode, exampleId, code, timeWindow } = nextProps;
+    const { errorStatusCode, code, timeWindow } = nextProps;
 
     if (
       errorStatusCode !== this.props.errorStatusCode ||
-      exampleId !== this.props.exampleId ||
       code !== this.props.code ||
       timeWindow !== this.props.timeWindow
     ) {
@@ -171,7 +146,6 @@ export default class extends Component {
     }
 
     const {
-      exampleId,
       code,
       timeWindowInputValue,
       vizParams,
@@ -181,7 +155,7 @@ export default class extends Component {
     } = this.state;
 
     return (
-      <Layout sidebarActiveItemId={exampleId}>
+      <Layout>
         <main className="main">
           <Controls
             timeWindow={timeWindowInputValue}

@@ -17,31 +17,27 @@ export default class extends Component {
     // This fails on the server with: `navigator` is not defined
     require('codemirror/mode/javascript/javascript');
 
-    // Without the `setTimeout`, there is a weird effect when navigating
-    // from /feedback to /examples/*
-    setTimeout(() => {
-      this.codeMirror = codemirror(this.container, {
-        mode: 'javascript',
-        tabSize: 2,
-        lineNumbers: true,
-        showCursorWhenSelecting: true,
-        theme: 'monokai',
-        extraKeys: {
-          'Cmd-Enter': onCmdEnter
-        }
-      });
-
-      this.codeMirror.on('change', this.onChange);
-      this.codeMirror.setValue(value);
-
-      /*
-        Without this, when browser's cache is disabled,
-        CodeMirror doesn't pick up the editor's font family ('Roboto mono')
-        to calculate the initial cursor height.
-        This results in cursor's height being 16px instead of 19px.
-       */
-      setTimeout(() => this.codeMirror.refresh(), 30);
+    this.codeMirror = codemirror(this.container, {
+      mode: 'javascript',
+      tabSize: 2,
+      lineNumbers: true,
+      showCursorWhenSelecting: true,
+      theme: 'monokai',
+      extraKeys: {
+        'Cmd-Enter': onCmdEnter
+      }
     });
+
+    this.codeMirror.on('change', this.onChange);
+    this.codeMirror.setValue(value);
+
+    /*
+      Without this, when browser's cache is disabled,
+      CodeMirror doesn't pick up the editor's font family ('Roboto mono')
+      to calculate the initial cursor height.
+      This results in cursor's height being 16px instead of 19px.
+      */
+    setTimeout(() => this.codeMirror.refresh(), 30);
   }
 
   componentWillReceiveProps(nextProps) {

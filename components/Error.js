@@ -68,7 +68,7 @@ export default class extends PureComponent {
     const { header, observable$, timeWindow, width } = this.state;
 
     return (
-      <Layout renderSidebar={false}>
+      <Layout>
         <div className="container">
           <div style={{ width, height: 63 }}>
             <RxViz timeWindow={timeWindow} observable$={observable$} />
@@ -79,7 +79,7 @@ export default class extends PureComponent {
               Here are some pages you might want to visit instead:
               <ul>
                 <li>
-                  <Link as="/" href="/?exampleId=basic-interval">
+                  <Link as="/" href="/">
                     <a>Rx Visualizer home page</a>
                   </Link>
                 </li>

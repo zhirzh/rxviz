@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Header = () => (
   <header className="container">
-    <Link as="/" href="/?exampleId=basic-interval">
+    <Link as="/" href="/">
       <a>
         <svg className="logo" width="44" height="44" fillRule="evenodd">
           <path

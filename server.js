@@ -10,20 +10,6 @@ app
   .then(() => {
     const server = express();
 
-    server.get('/examples/:id', (req, res) => {
-      const actualPage = '/';
-      const queryParams = { exampleId: req.params.id };
-
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get('/feedback/*', (req, res) => {
-      const actualPage = '/feedback';
-      const queryParams = {};
-
-      app.render(req, res, actualPage, queryParams);
-    });
-
     server.get('/v/:snippetId', (req, res) => {
       const actualPage = '/';
       const queryParams = { snippetId: req.params.snippetId };
@@ -33,9 +19,8 @@ app
 
     server.get('/', (req, res) => {
       const actualPage = '/';
-      const queryParams = { exampleId: 'basic-interval' };
 
-      app.render(req, res, actualPage, queryParams);
+      app.render(req, res, actualPage);
     });
 
     server.get('*', (req, res) => {
