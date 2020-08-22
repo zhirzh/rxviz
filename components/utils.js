@@ -9,8 +9,19 @@ export const compress = string =>
 export const decompress = string =>
   decompressFromBase64(string.replace(/-/g, '+').replace(/_/g, '/'));
 
-export const encode = data => encodeURIComponent(data);
+export const downloadSvg = svg => {
+  const element = document.createElement('a');
 
-export const decode = text => {
-  return decodeURIComponent(text);
+  element.setAttribute(
+    'href',
+    'data:image/svg;charset=utf-8,' + encodeURIComponent(svg)
+  );
+
+  element.setAttribute('download', 'rxviz.svg');
+
+  element.style.display = 'none';
+
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 };

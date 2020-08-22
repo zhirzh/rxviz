@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Measure from 'react-measure';
 import NumericInput from 'react-numeric-input';
-import copy from 'copy-to-clipboard';
+import { downloadSvg } from './utils';
 import Button from './Button';
 import timeWindowInputStyles from '../css/timeWindowInput';
 
@@ -123,7 +123,7 @@ export default class extends Component {
     );
   }
 
-  renderCopySvgButton() {
+  renderSaveSvgButton() {
     const { svg } = this.props;
 
     if (!svg) {
@@ -138,17 +138,17 @@ export default class extends Component {
         size={this.getButtonSize()}
         disabled={copiedSvg}
         icon={copiedSvg ? checkIcon : copyIcon}
-        text={copiedSvg ? 'SVG copied' : 'Copy SVG'}
+        text={'Save SVG'}
         style={{ width: 135 }}
-        onClick={this.onCopySvg}
+        onClick={this.onSaveSvg}
       />
     );
   }
 
-  onCopySvg = () => {
+  onSaveSvg = () => {
     const { svg } = this.props;
 
-    copy(svg);
+    downloadSvg(svg);
 
     this.setState({
       copiedSvg: true
@@ -220,7 +220,7 @@ export default class extends Component {
                 </div>
                 <div className="inner-container">
                   <div className="second-inner-container">
-                    {this.renderCopySvgButton()}
+                    {this.renderSaveSvgButton()}
                     {this.renderShareButton()}
                   </div>
                 </div>

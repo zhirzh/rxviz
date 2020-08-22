@@ -235,6 +235,7 @@ export default class RxVizSnapshotSvg extends Component {
 
     return (
       <svg
+        xmlns="http://www.w3.org/2000/svg"
         width={svgDimensions.width}
         height={svgDimensions.height}
         style={svgStyle}
