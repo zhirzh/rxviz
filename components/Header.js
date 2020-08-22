@@ -17,9 +17,11 @@ const Header = () => (
       <h2>Animated playground for Rx Observables</h2>
     </div>
     <a
-      href="https://github.com/moroshko/rxviz"
+      href="https://github.com/zhirzh/rxviz"
       className="github-link"
       title="Visit RxViz GitHub page"
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <svg width="24" height="24" viewBox="0 0 438.549 438.549">
         <path

@@ -84,7 +84,7 @@ export default class extends PureComponent {
                   </Link>
                 </li>
                 <li>
-                  <Link href="https://github.com/moroshko/rxviz">
+                  <Link href="https://github.com/zhirzh/rxviz">
                     <a>Rx Visualizer on GitHub</a>
                   </Link>
                 </li>
