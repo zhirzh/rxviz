@@ -4,7 +4,8 @@ import Layout from '../components/Layout';
 import Controls from '../components/Controls';
 import Editor from '../components/Editor';
 import Output from '../components/Output';
-import { createSnippet, getSnippet, shareSnippet } from '../api/snippets';
+import { compress, decompress } from '../components/utils';
+import copy from 'copy-to-clipboard';
 
 const localStorageKey = 'rxviz-stash';
 
@@ -20,28 +21,7 @@ interval(1000).pipe(
 `;
 
 export default class extends Component {
-  static async getInitialProps({ query, res }) {
-    const { snippetId } = query;
-
-    if (snippetId) {
-      // came from /v/hashid
-      return getSnippet(snippetId)
-        .then(({ code, timeWindow }) => ({
-          code,
-          timeWindow
-        }))
-        .catch(() => {
-          // on the client, res will be undefined
-          if (res) {
-            res.statusCode = 404;
-          }
-
-          return {
-            errorStatusCode: 404
-          };
-        });
-    }
-
+  static getInitialProps() {
     return {
       code: exampleCode,
       timeWindow: 5000
@@ -55,18 +35,14 @@ export default class extends Component {
   }
 
   componentDidMount() {
+    const snippet = this.getSnippet();
     const stash = this.getLocalStorageStash();
 
-    if (stash) {
-      const { code, timeWindow } = stash;
+    if (snippet || stash) {
+      const { code, timeWindow } = snippet || stash;
 
       // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState(
-        this.resetState({
-          code,
-          timeWindow
-        })
-      );
+      this.setState(this.resetState({ code, timeWindow }));
     }
   }
 
@@ -77,9 +53,7 @@ export default class extends Component {
       timeWindowInputValue: props.timeWindow / 1000,
       timeWindowInputValueBeforeChange: null,
       vizParams: null,
-      svg: null,
-      snippetCreationFailed: false,
-      lastSnippetId: null
+      svg: null
     };
   }
 
@@ -106,6 +80,14 @@ export default class extends Component {
         code,
         timeWindow: timeWindowInputValue * 1000
       });
+    }
+  }
+
+  getSnippet() {
+    try {
+      return JSON.parse(decompress(location.hash.slice(1)));
+    } catch {
+      return null;
     }
   }
 
@@ -171,8 +153,7 @@ export default class extends Component {
     const {
       code,
       timeWindowInputValue,
-      timeWindowInputValueBeforeChange,
-      lastSnippetId
+      timeWindowInputValueBeforeChange
     } = this.state;
     const newTimeWindowInputValue =
       timeWindowInputValue === null
@@ -188,26 +169,19 @@ export default class extends Component {
       vizParams,
       svg: null
     });
-
-    createSnippet({
-      ...vizParams,
-      snippetIdToDelete: lastSnippetId
-    })
-      .then(({ id }) => {
-        this.setState({
-          snippetCreationFailed: false,
-          lastSnippetId: id
-        });
-      })
-      .catch(() => {
-        this.setState({
-          snippetCreationFailed: true
-        });
-      });
   };
 
-  onShare = snippetId => {
-    shareSnippet(snippetId);
+  onShare = () => {
+    const { code, timeWindowInputValue } = this.state;
+
+    location.hash = compress(
+      JSON.stringify({
+        code,
+        timeWindow: timeWindowInputValue * 1000
+      })
+    );
+
+    copy(location);
   };
 
   onSvgStable = svg => {
@@ -223,14 +197,7 @@ export default class extends Component {
       return <Error statusCode={errorStatusCode} />;
     }
 
-    const {
-      code,
-      timeWindowInputValue,
-      vizParams,
-      svg,
-      snippetCreationFailed,
-      lastSnippetId
-    } = this.state;
+    const { code, timeWindowInputValue, vizParams, svg } = this.state;
 
     return (
       <Layout>
@@ -242,8 +209,6 @@ export default class extends Component {
             onTimeWindowBlur={this.onTimeWindowInputValueBlur}
             svg={svg}
             onVisualize={this.onVisualize}
-            isShareAvailable={!snippetCreationFailed}
-            shareId={lastSnippetId}
             onShare={this.onShare}
           />
           <div className="editor-and-output">

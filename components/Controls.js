@@ -39,15 +39,6 @@ const checkIcon = (
   </svg>
 );
 
-const alertIcon = (
-  <svg width="16" height="16" viewBox="0 0 24 24">
-    <path
-      fill="#eeeff0"
-      d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
-    />
-  </svg>
-);
-
 export default class extends Component {
   static propTypes = {
     timeWindow: PropTypes.number /* Can be null if the input is blank */,
@@ -56,8 +47,6 @@ export default class extends Component {
     onTimeWindowBlur: PropTypes.func.isRequired,
     svg: PropTypes.string,
     onVisualize: PropTypes.func.isRequired,
-    isShareAvailable: PropTypes.bool.isRequired,
-    shareId: PropTypes.string,
     onShare: PropTypes.func.isRequired
   };
 
@@ -67,7 +56,7 @@ export default class extends Component {
     this.state = {
       width: null,
       copiedSvg: false,
-      shareState: 'ready' // 'shared', 'error'
+      shareState: 'ready' // 'shared'
     };
   }
 
@@ -173,12 +162,6 @@ export default class extends Component {
   };
 
   renderShareButton() {
-    const { isShareAvailable, shareId } = this.props;
-
-    if (isShareAvailable && !shareId) {
-      return null;
-    }
-
     const { shareState } = this.state;
 
     return (
@@ -186,20 +169,8 @@ export default class extends Component {
         type="secondary"
         size={this.getButtonSize()}
         disabled={shareState !== 'ready'}
-        icon={
-          shareState === 'error'
-            ? alertIcon
-            : shareState === 'shared'
-              ? checkIcon
-              : shareIcon
-        }
-        text={
-          shareState === 'error'
-            ? 'Failed'
-            : shareState === 'shared'
-              ? 'Link copied'
-              : 'Share link'
-        }
+        icon={shareState === 'shared' ? checkIcon : shareIcon}
+        text={shareState === 'shared' ? 'Link copied' : 'Share link'}
         style={{ width: 130, marginLeft: 15 }}
         onClick={this.onShare}
       />
@@ -207,15 +178,10 @@ export default class extends Component {
   }
 
   onShare = () => {
-    const { isShareAvailable, shareId, onShare } = this.props;
-
-    if (isShareAvailable) {
-      copy(`${location.origin}/v/${shareId}`);
-      onShare(shareId);
-    }
+    this.props.onShare();
 
     this.setState({
-      shareState: isShareAvailable ? 'shared' : 'error'
+      shareState: 'shared'
     });
 
     setTimeout(() => {

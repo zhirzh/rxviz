@@ -10,13 +10,6 @@ app
   .then(() => {
     const server = express();
 
-    server.get('/v/:snippetId', (req, res) => {
-      const actualPage = '/';
-      const queryParams = { snippetId: req.params.snippetId };
-
-      app.render(req, res, actualPage, queryParams);
-    });
-
     server.get('/', (req, res) => {
       const actualPage = '/';
 

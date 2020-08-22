@@ -53,6 +53,7 @@ export default class extends Component {
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
 
             height: 40px;
             border: 0;
