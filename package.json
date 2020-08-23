@@ -10,7 +10,8 @@
   "scripts": {
     "start": "NODE_ENV=production node server.js",
     "dev": "node server.js",
-    "build": "next build",
+    "build": "rm -rf .next/ out/ && next build && next export",
+    "deploy": "npm run build && touch out/.nojekyll && gh-pages -t -d out/ -m 'deploy'",
     "lint": "eslint components css lib pages ./*.js",
     "test": "jest",
     "coverage": "jest --coverage",
@@ -48,6 +49,7 @@
     "babel-eslint": "^8.2.5",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.1.0",
+    "gh-pages": "^3.1.0",
     "husky": "^0.13.4",
     "jest": "^20.0.4",
     "lint-staged": "^3.6.1",

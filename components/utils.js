@@ -25,3 +25,5 @@ export const downloadSvg = svg => {
   element.click();
   document.body.removeChild(element);
 };
+
+export const removeTrailingSlash = text => text.replace(/\/$/, '');

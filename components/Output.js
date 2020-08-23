@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { removeTrailingSlash } from './utils';
 
 export default class extends Component {
   static propTypes = {
@@ -19,7 +20,7 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    this.sandbox = `${location.origin}/sandbox`;
+    this.sandbox = `${removeTrailingSlash(location.href)}/sandbox`;
 
     window.addEventListener('message', this.handleMessageFromSandbox);
   }
@@ -105,7 +106,7 @@ export default class extends Component {
       <div className="output">
         <div className="content">
           <iframe
-            src="/sandbox"
+            src={`${process.env.ASSET_PREFIX}/sandbox`}
             sandbox="allow-scripts allow-same-origin"
             ref={this.saveSandboxWindow}
           />
