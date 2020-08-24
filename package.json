@@ -11,7 +11,7 @@
     "start": "NODE_ENV=production node server.js",
     "dev": "node server.js",
     "build": "rm -rf .next/ out/ && next build && next export",
-    "deploy": "npm run build && touch out/.nojekyll && gh-pages -t -d out/ -m 'deploy'",
+    "deploy": "npm run build && touch out/.nojekyll && gh-pages -f -t -d out/ -m 'deploy'",
     "lint": "eslint components css lib pages ./*.js",
     "test": "jest",
     "coverage": "jest --coverage",

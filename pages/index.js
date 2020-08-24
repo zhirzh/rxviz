@@ -76,10 +76,14 @@ export default class extends Component {
       code !== prevState.code ||
       timeWindowInputValue !== prevState.timeWindowInputValue
     ) {
-      this.setLocalStorageStash({
+      const data = JSON.stringify({
         code,
         timeWindow: timeWindowInputValue * 1000
       });
+
+      location.hash = compress(data);
+
+      localStorage.setItem(localStorageKey, data);
     }
   }
 
@@ -115,10 +119,6 @@ export default class extends Component {
 
     localStorage.removeItem(localStorageKey);
     return null;
-  }
-
-  setLocalStorageStash(stash) {
-    localStorage.setItem(localStorageKey, JSON.stringify(stash));
   }
 
   onTimeWindowInputValueFocus = () => {
@@ -172,15 +172,6 @@ export default class extends Component {
   };
 
   onShare = () => {
-    const { code, timeWindowInputValue } = this.state;
-
-    location.hash = compress(
-      JSON.stringify({
-        code,
-        timeWindow: timeWindowInputValue * 1000
-      })
-    );
-
     copy(location);
   };
 
