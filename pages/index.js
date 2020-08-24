@@ -13,11 +13,12 @@ const exampleCode = `const { interval } = Rx;
 
 const { } = RxOperators;
 // All operators are available as globals
-// Note: "window" operator us available as "win"
+// Note: "window" operator is available as "win"
 
 interval(1000).pipe(
   take(4)
 )
+// Last expression must be an observable
 `;
 
 export default class extends Component {

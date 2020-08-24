@@ -1,12 +1,14 @@
 {
   "name": "RxViz",
-  "version": "1.0.0",
   "description": "Animated playground for Rx Observables",
   "repository": {
     "type": "git",
     "url": "https://github.com/zhirzh/rxviz.git"
   },
   "author": "Misha Moroshko <michael.moroshko@gmail.com>",
+  "contributors": [
+    "Shirsh Zibbu <zibbu.shirsh@gmail.com>"
+  ],
   "scripts": {
     "start": "NODE_ENV=production node server.js",
     "dev": "node server.js",

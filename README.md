@@ -1,25 +1,5 @@
 # <a href='https://rxviz.com'><img src='https://user-images.githubusercontent.com/259753/26937967-b6bd7262-4c27-11e7-97f3-29878d7ec468.png' height='60' alt='RxViz logo'></a>
 
-- [Project Status](#project-status)
-- [Description](#description)
-- [Examples](#examples)
-  - [Basic Interval](#basic-interval)
-  - [Random error](#random-error)
-  - [Higher order Observable](#higher-order-observable)
-  - [Pause and resume](#pause-and-resume)
-- [How does it work?](#how-does-it-work)
-  - [How about higher order Observables?](#how-about-higher-order-observables)
-- [Thanks](#thanks)
-- [Running locally](#running-locally)
-
-## Project Status
-
-Looking for maintainers!
-
-Unfortunately, I don't have the time to maintain this project anymore. If you are interested to help, please reach out to me on Twitter [@moroshko](https://twitter.com/moroshko).
-
-## Description
-
 RxViz simply visualizes a given Observable. Your JavaScript code will be evaluated, and, if the last expression is an Observable, a nice animated visualization will appear.
 
 You can also:
@@ -45,18 +25,6 @@ You can also:
 ### Pause and resume
 
 [![rxviz-pause-and-resume](https://user-images.githubusercontent.com/259753/26908310-bb0f8540-4bae-11e7-9bb7-9520ec567fdf.gif)](https://rxviz.com/examples/pause-and-resume)
-
-## How does it work?
-
-RxViz treats the evaluated Observable as a black box. We rely only on the fact that Observable emits values over time. **RxViz doesn't rely on the internals of RxJS.** This will allow us to visualize [TC39 Observables](https://github.com/tc39/proposal-observable) in the future.
-
-Technically, we subscribe to the given Observable, and, once a value is observed, we simply add it to the visualization. It's that simple!
-
-### How about higher order Observables?
-
-No different. Since a higher order Observable is simply an Observable whose values are Observables themselves, we just repeat the process recursively.
-
-When an Observable value is seen, we subscribe to it. At this point, we create a new "branch" in the visualization.
 
 ## Thanks
 
