@@ -1,0 +1,1 @@
+_N_E=(window.webpackJsonp_N_E=window.webpackJsonp_N_E||[]).push([[7],{"97Is":function(n,t,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/404",function(){return u("uNx/")}])},"uNx/":function(n,t,u){"use strict";u.r(t);var _=u("q1tI"),e=u.n(_),o=u("yNO/"),s=e.a.createElement;t.default=function(){return s(o.a,{statusCode:404})}}},[["97Is",0,1,2,3,4]]]);
